@@ -74,69 +74,77 @@ $page_title = 'Login';
     <link rel="stylesheet" href="assets/css/style.css">
 </head>
 
-<body>
-    <div class="login-container">
-        <div class="container">
-            <div class="row justify-content-center">
-                <div class="col-md-5">
-                    <div class="card login-card shadow-lg">
-                        <div class="card-body p-5">
-                            <div class="login-header">
-                                <i class="bi bi-truck-front"></i>
-                                <h3 class="mb-2">Sistem Informasi Angkot</h3>
-                                <p class="text-muted">Silakan login untuk melanjutkan</p>
+<body class="login-page-body">
+    <div class="login-wrapper">
+        <div class="row g-0 login-floating-card">
+            <!-- Left Side: Branding & Illustration -->
+            <div class="col-lg-6 login-left-side">
+                <div class="login-illustration">
+                    <div class="lottie-container">
+                        <lottie-player src="https://assets10.lottiefiles.com/packages/lf20_zw0djhar.json"
+                            background="transparent" speed="1" loop autoplay></lottie-player>
+                    </div>
+                    <h1>Angkotin</h1>
+                    <p>Sistem Informasi Angkutan Kota Terintegrasi. Solusi cerdas untuk manajemen transportasi masa
+                        depan.</p>
+                </div>
+            </div>
+
+            <!-- Right Side: Login Form -->
+            <div class="col-lg-6 login-right-side">
+                <div class="login-form-container">
+                    <div class="login-title-section">
+                        <h3>Selamat Datang!</h3>
+                        <p class="text-muted">Silakan login untuk memulai sesi Anda</p>
+                    </div>
+
+                    <?php if (!empty($error)): ?>
+                        <div class="alert alert-danger mb-4" role="alert">
+                            <i class="bi bi-exclamation-circle"></i>
+                            <?php echo $error; ?>
+                        </div>
+                    <?php endif; ?>
+
+                    <form method="POST" action="" class="needs-validation" novalidate>
+                        <div class="login-input-group">
+                            <label for="username">Username</label>
+                            <div class="input-wrapper">
+                                <input type="text" class="form-control login-input" id="username" name="username"
+                                    required autofocus placeholder="Masukkan username">
+                                <i class="bi bi-person"></i>
                             </div>
-
-                            <?php if (!empty($error)): ?>
-                                <div class="alert alert-danger" role="alert">
-                                    <i class="bi bi-exclamation-circle"></i>
-                                    <?php echo $error; ?>
-                                </div>
-                            <?php endif; ?>
-
-                            <form method="POST" action="" class="needs-validation" novalidate>
-                                <div class="mb-4">
-                                    <label for="username" class="form-label">
-                                        <i class="bi bi-person"></i> Username
-                                    </label>
-                                    <input type="text" class="form-control form-control-lg" id="username"
-                                        name="username" required autofocus placeholder="Masukkan username">
-                                    <div class="invalid-feedback">
-                                        Username harus diisi
-                                    </div>
-                                </div>
-
-                                <div class="mb-4">
-                                    <label for="password" class="form-label">
-                                        <i class="bi bi-lock"></i> Password
-                                    </label>
-                                    <input type="password" class="form-control form-control-lg" id="password"
-                                        name="password" required placeholder="Masukkan password">
-                                    <div class="invalid-feedback">
-                                        Password harus diisi
-                                    </div>
-                                </div>
-
-                                <div class="d-grid">
-                                    <button type="submit" class="btn btn-primary btn-lg">
-                                        <i class="bi bi-box-arrow-in-right"></i> Login
-                                    </button>
-                                </div>
-                            </form>
-
-                            <div class="text-center mt-4">
-                                <small class="text-muted">
-                                    Default login:<br>
-                                    <strong>admin / admin123</strong> atau <strong>staff1 / admin123</strong>
-                                </small>
+                            <div class="invalid-feedback">
+                                Username harus diisi
                             </div>
                         </div>
-                    </div>
+
+                        <div class="login-input-group">
+                            <label for="password">Password</label>
+                            <div class="input-wrapper">
+                                <input type="password" class="form-control login-input" id="password" name="password"
+                                    required placeholder="Masukkan password">
+                                <i class="bi bi-lock"></i>
+                            </div>
+                            <div class="invalid-feedback">
+                                Password harus diisi
+                            </div>
+                        </div>
+
+                        <div class="d-grid">
+                            <button type="submit" class="btn btn-primary btn-login">
+                                MASUK SEKARANG
+                            </button>
+                        </div>
+                    </form>
+
+
                 </div>
             </div>
         </div>
     </div>
 
+    <!-- Lottie Player -->
+    <script src="https://unpkg.com/@lottiefiles/lottie-player@latest/dist/lottie-player.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
     <script>
         // Form validation

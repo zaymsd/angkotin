@@ -13,7 +13,8 @@ $current_dir = basename(dirname($_SERVER['PHP_SELF']));
 <aside class="sidebar" id="sidebar">
     <div class="sidebar-header">
         <div class="sidebar-brand">
-            <i class="bi bi-truck"></i>
+            <img src="<?php echo $base_path; ?>/assets/images/logoangkot.png" alt="Angkotin Logo"
+                class="sidebar-brand-logo">
             <span class="sidebar-brand-text">Angkotin</span>
         </div>
         <button class="sidebar-toggle-btn d-lg-none" id="sidebarToggle">
