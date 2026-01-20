@@ -111,6 +111,10 @@ include '../../includes/header.php';
         <h3><i class="bi bi-file-earmark-bar-graph"></i> Laporan Keuangan</h3>
     </div>
     <div class="col-md-6 text-end">
+        <a href="export_keuangan_pdf.php?bulan=<?php echo $bulan; ?>&tahun=<?php echo $tahun; ?>" class="btn btn-danger"
+            target="_blank">
+            <i class="bi bi-file-pdf"></i> Export PDF
+        </a>
         <button onclick="window.print()" class="btn btn-secondary">
             <i class="bi bi-printer"></i> Cetak
         </button>
@@ -325,50 +329,50 @@ include '../../includes/header.php';
             type: 'bar',
             data: {
                 labels: <?php echo json_encode($chart_labels); ?>,
-            datasets: [
-                {
-                    label: 'Pendapatan',
-                    data: <?php echo json_encode(array_values($chart_setoran)); ?>,
+                datasets: [
+                    {
+                        label: 'Pendapatan',
+                        data: <?php echo json_encode(array_values($chart_setoran)); ?>,
                         backgroundColor: 'rgba(25, 135, 84, 0.7)',
-                            borderColor: 'rgba(25, 135, 84, 1)',
-                                borderWidth: 1
-    },
-        {
-            label: 'Pengeluaran',
-            data: <?php echo json_encode(array_values($chart_servis)); ?>,
-                backgroundColor: 'rgba(220, 53, 69, 0.7)',
-                    borderColor: 'rgba(220, 53, 69, 1)',
+                        borderColor: 'rgba(25, 135, 84, 1)',
                         borderWidth: 1
-                }
-            ]
-        },
-    options: {
-        responsive: true,
-            plugins: {
-            legend: {
-                position: 'top'
+                    },
+                    {
+                        label: 'Pengeluaran',
+                        data: <?php echo json_encode(array_values($chart_servis)); ?>,
+                        backgroundColor: 'rgba(220, 53, 69, 0.7)',
+                        borderColor: 'rgba(220, 53, 69, 1)',
+                        borderWidth: 1
+                    }
+                ]
             },
-            tooltip: {
-                callbacks: {
-                    label: function(context) {
-                        return context.dataset.label + ': Rp ' + context.raw.toLocaleString('id-ID');
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: {
+                        position: 'top'
+                    },
+                    tooltip: {
+                        callbacks: {
+                            label: function (context) {
+                                return context.dataset.label + ': Rp ' + context.raw.toLocaleString('id-ID');
+                            }
+                        }
+                    }
+                },
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            callback: function (value) {
+                                return 'Rp ' + (value / 1000000).toFixed(1) + ' Jt';
+                            }
+                        }
                     }
                 }
             }
-        },
-        scales: {
-            y: {
-                beginAtZero: true,
-                    ticks: {
-                    callback: function(value) {
-                        return 'Rp ' + (value / 1000000).toFixed(1) + ' Jt';
-                    }
-                }
-            }
-        }
-    }
+        });
     });
-});
 </script>
 
 <?php include '../../includes/footer.php'; ?>

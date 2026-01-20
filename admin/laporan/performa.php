@@ -105,6 +105,10 @@ include '../../includes/header.php';
         <h3><i class="bi bi-graph-up-arrow"></i> Performa Armada</h3>
     </div>
     <div class="col-md-6 text-end">
+        <a href="export_performa_pdf.php?bulan=<?php echo $bulan; ?>&tahun=<?php echo $tahun; ?>" class="btn btn-danger"
+            target="_blank">
+            <i class="bi bi-file-pdf"></i> Export PDF
+        </a>
         <button onclick="window.print()" class="btn btn-secondary">
             <i class="bi bi-printer"></i> Cetak
         </button>
@@ -354,77 +358,77 @@ include '../../includes/header.php';
             type: 'bar',
             data: {
                 labels: <?php echo json_encode($mobil_labels); ?>,
-            datasets: [
-                {
-                    label: 'Setoran',
-                    data: <?php echo json_encode($mobil_setoran); ?>,
-                backgroundColor: 'rgba(25, 135, 84, 0.7)',
-                borderColor: 'rgba(25, 135, 84, 1)',
-                borderWidth: 1
+                datasets: [
+                    {
+                        label: 'Setoran',
+                        data: <?php echo json_encode($mobil_setoran); ?>,
+                        backgroundColor: 'rgba(25, 135, 84, 0.7)',
+                        borderColor: 'rgba(25, 135, 84, 1)',
+                        borderWidth: 1
+                    },
+                    {
+                        label: 'Biaya Servis',
+                        data: <?php echo json_encode($mobil_servis); ?>,
+                        backgroundColor: 'rgba(220, 53, 69, 0.7)',
+                        borderColor: 'rgba(220, 53, 69, 1)',
+                        borderWidth: 1
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: { position: 'top' },
+                    tooltip: {
+                        callbacks: {
+                            label: function (context) {
+                                return context.dataset.label + ': Rp ' + context.raw.toLocaleString('id-ID');
+                            }
+                        }
+                    }
                 },
-            {
-                label: 'Biaya Servis',
-                data: <?php echo json_encode($mobil_servis); ?>,
-            backgroundColor: 'rgba(220, 53, 69, 0.7)',
-            borderColor: 'rgba(220, 53, 69, 1)',
-            borderWidth: 1
-                }
-            ]
-        },
-        options: {
-        responsive: true,
-        plugins: {
-            legend: { position: 'top' },
-            tooltip: {
-                callbacks: {
-                    label: function (context) {
-                        return context.dataset.label + ': Rp ' + context.raw.toLocaleString('id-ID');
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        ticks: {
+                            callback: function (value) {
+                                return 'Rp ' + (value / 1000000).toFixed(1) + ' Jt';
+                            }
+                        }
                     }
                 }
             }
-        },
-        scales: {
-            y: {
-                beginAtZero: true,
-                ticks: {
-                    callback: function (value) {
-                        return 'Rp ' + (value / 1000000).toFixed(1) + ' Jt';
-                    }
-                }
-            }
-        }
-    }
-    });
+        });
 
-    // Chart Supir (Pie/Doughnut)
-    const ctxSupir = document.getElementById('chartSupir').getContext('2d');
-    new Chart(ctxSupir, {
-        type: 'doughnut',
-        data: {
-            labels: <?php echo json_encode(array_slice($supir_labels, 0, 10)); ?>,
+        // Chart Supir (Pie/Doughnut)
+        const ctxSupir = document.getElementById('chartSupir').getContext('2d');
+        new Chart(ctxSupir, {
+            type: 'doughnut',
+            data: {
+                labels: <?php echo json_encode(array_slice($supir_labels, 0, 10)); ?>,
                 datasets: [{
                     data: <?php echo json_encode(array_slice($supir_setoran, 0, 10)); ?>,
                     backgroundColor: [
-                    '#004e89', '#ff6b35', '#198754', '#0dcaf0', '#ffc107',
-                    '#6f42c1', '#d63384', '#fd7e14', '#20c997', '#6c757d'
-                ]
-            }]
-        },
-    options: {
-        responsive: true,
-            plugins: {
-            legend: { position: 'right' },
-            tooltip: {
-                callbacks: {
-                    label: function(context) {
-                        return context.label + ': Rp ' + context.raw.toLocaleString('id-ID');
+                        '#004e89', '#ff6b35', '#198754', '#0dcaf0', '#ffc107',
+                        '#6f42c1', '#d63384', '#fd7e14', '#20c997', '#6c757d'
+                    ]
+                }]
+            },
+            options: {
+                responsive: true,
+                plugins: {
+                    legend: { position: 'right' },
+                    tooltip: {
+                        callbacks: {
+                            label: function (context) {
+                                return context.label + ': Rp ' + context.raw.toLocaleString('id-ID');
+                            }
+                        }
                     }
                 }
             }
-        }
-    }
+        });
     });
-});
 </script>
 
 <?php include '../../includes/footer.php'; ?>
