@@ -32,14 +32,23 @@ if ($result->num_rows === 0) {
 
 $mobil = $result->fetch_assoc();
 
-// Soft delete - set status to nonaktif
-$stmt = $conn->prepare("UPDATE mobil SET status = 'nonaktif' WHERE id_mobil = ?");
+// Hard delete
+$stmt = $conn->prepare("DELETE FROM mobil WHERE id_mobil = ?");
 $stmt->bind_param("i", $id);
 
-if ($stmt->execute()) {
-    set_flash('success', 'Data mobil "' . $mobil['no_polisi'] . '" berhasil dinonaktifkan.');
-} else {
-    set_flash('error', 'Gagal menghapus data mobil: ' . $conn->error);
+try {
+    if ($stmt->execute()) {
+        set_flash('success', 'Data mobil "' . $mobil['no_polisi'] . '" berhasil dihapus.');
+    } else {
+        throw new Exception($conn->error);
+    }
+} catch (Exception $e) {
+    // Check for foreign key constraint violation (Error 1451)
+    if ($conn->errno == 1451) {
+        set_flash('error', 'Gagal menghapus: Mobil ini memiliki riwayat transaksi (Absensi/Setoran/Servis). Hapus data transaksi terlebih dahulu.');
+    } else {
+        set_flash('error', 'Gagal menghapus data mobil: ' . $e->getMessage());
+    }
 }
 
 redirect('index.php');

@@ -32,14 +32,23 @@ if ($result->num_rows === 0) {
 
 $supir = $result->fetch_assoc();
 
-// Soft delete - set status to nonaktif
-$stmt = $conn->prepare("UPDATE supir SET status = 'nonaktif' WHERE id_supir = ?");
+// Hard delete
+$stmt = $conn->prepare("DELETE FROM supir WHERE id_supir = ?");
 $stmt->bind_param("i", $id);
 
-if ($stmt->execute()) {
-    set_flash('success', 'Data supir "' . $supir['nama_supir'] . '" berhasil dinonaktifkan.');
-} else {
-    set_flash('error', 'Gagal menghapus data supir: ' . $conn->error);
+try {
+    if ($stmt->execute()) {
+        set_flash('success', 'Data supir "' . $supir['nama_supir'] . '" berhasil dihapus.');
+    } else {
+        throw new Exception($conn->error);
+    }
+} catch (Exception $e) {
+    // Check for foreign key constraint violation (Error 1451)
+    if ($conn->errno == 1451) {
+        set_flash('error', 'Gagal menghapus: Supir ini memiliki riwayat transaksi (Absensi/Setoran). Hapus data transaksi terlebih dahulu.');
+    } else {
+        set_flash('error', 'Gagal menghapus data supir: ' . $e->getMessage());
+    }
 }
 
 redirect('index.php');

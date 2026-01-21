@@ -38,14 +38,23 @@ if ($result->num_rows === 0) {
 
 $user = $result->fetch_assoc();
 
-// Soft delete - set status to nonaktif
-$stmt = $conn->prepare("UPDATE users SET status = 'nonaktif' WHERE id_user = ?");
+// Hard delete
+$stmt = $conn->prepare("DELETE FROM users WHERE id_user = ?");
 $stmt->bind_param("i", $id);
 
-if ($stmt->execute()) {
-    set_flash('success', 'User "' . $user['username'] . '" berhasil dinonaktifkan.');
-} else {
-    set_flash('error', 'Gagal menghapus user: ' . $conn->error);
+try {
+    if ($stmt->execute()) {
+        set_flash('success', 'User "' . $user['username'] . '" berhasil dihapus.');
+    } else {
+        throw new Exception($conn->error);
+    }
+} catch (Exception $e) {
+    // Check for foreign key constraint violation (Error 1451)
+    if ($conn->errno == 1451) {
+        set_flash('error', 'Gagal menghapus: User ini telah menginput data transaksi. Data user tidak dapat dihapus demi integritas data.');
+    } else {
+        set_flash('error', 'Gagal menghapus user: ' . $e->getMessage());
+    }
 }
 
 redirect('index.php');
