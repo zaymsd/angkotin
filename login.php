@@ -64,6 +64,9 @@ $page_title = 'Login';
         <?php echo $page_title; ?> - Angkotin
     </title>
 
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="assets/images/logoangkot.png">
+
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 

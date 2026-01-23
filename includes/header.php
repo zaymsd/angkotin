@@ -30,6 +30,9 @@ $current_page = basename($_SERVER['PHP_SELF'], '.php');
         <?php echo $page_title; ?> - Angkotin
     </title>
 
+    <!-- Favicon -->
+    <link rel="icon" type="image/png" href="<?php echo $base_path; ?>/assets/images/logoangkot.png">
+
     <!-- Bootstrap CSS -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
 
